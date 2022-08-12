@@ -20,13 +20,10 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const projectSelect = await proModel.get(req.params.id)
-        if (!projectSelect) {
-            res.status(404).json({ message: 'Houston, we have a problem...that doesnt exist.' })
-        } else {
-            res.json(projectSelect)
-        }
+        if (!projectSelect) return res.status(404).json({ message: 'Houston, we have a problem...that doesnt exist.' })
+        res.json(projectSelect)
     } catch (error) {
-
+        res.status(500).json({ message: 'Something went wrong on our end' })
     }
 
 })
@@ -46,35 +43,50 @@ router.post('/', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-const changes = req.body;
-proModel.update(req.params.id, changes)
-.then(updatedProject => {
-    if(updatedProject) {
-        res.status(200).json(updatedProject)
-    } else {
-        res.status(404).json({message: "doesnt exist with that id"})
+    const changes = req.body;
+    proModel.update(req.params.id, changes)
+        .then(updatedProject => {
+
+            if (!updatedProject) {
+
+                res.status(404).json({ message: "doesnt exist with that id" })
+            }
+            else if (!updatedProject.name || !updatedProject.description) {
+                res.status(400).json({ message: 'We Need DETAILS; give name and description' })
+            }
+            else {
+                res.status(200).json(updatedProject)
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ message: 'We Need a new server' })
+        })
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const killswitch = await proModel.get(req.params.id);
+        if (!killswitch) {
+            res.status(404).json({ message: "whoa! try again doesnt exist" });
+        } else {
+            await proModel.remove(req.params.id)
+            res.status(200).json({ message: "confirmed kill" })
+        }
+    } catch (error) {
+        res.status(500)
+
     }
-})
-.catch( error => {
-    res.status(400).json({message: 'We Need DETAILS; give name and description'})
-})
 
 
 
 
-    // const { name, description } = req.body;
 
-    // if (!name || !description) return res.status(400).json({ message: 'We Need DETAILS; give name and description' });
-    // try {
-    //     const updatedProjectResult = await proModel.update(req.params.id, { name, description })
-    //     if (!updatedProjectResult) return res.status(404).json({ message: "doesnt exist with that id" })
 
-    //     const newUpdate = await proModel.get(req.params.id)
-    //     res.status(200).json(newUpdate)
-    // } catch (error) {
-    //     res.status(400)
-    // }
-})
+
+
+});
+
+
 
 
 

@@ -11,4 +11,96 @@ project GET all
 
 
 
-    ----------------PROJECT POS
+    ----------------PROJECT POST---------------
+
+router.post('/', async (req, res) => {
+    const { name, description } = req.body;
+    try {
+        if (!name || !description) return res.status(400).json({ message: "Please provide a name and a description" })
+
+
+        const newProject = await proModel.insert({ name, description })
+        res.status(201).json({ id: req.params.id, newProject })
+
+    } catch (error) {
+
+    }
+
+
+})
+
+
+-----------------PROJECT PUT-----------------
+router.put('/:id', async (req, res) => {
+    const { name, description } = req.body;
+
+    if (!name || !description) return res.status(400).json({ message: 'We Need DETAILS; give name and description' });
+    try {
+        const updatedProjectResult = await proModel.update(req.params.id, { name, description })
+        if (!updatedProjectResult) return res.status(404).json({ message: "doesnt exist with that id" })
+
+        const newUpdate = await proModel.get(req.params.id)
+        res.status(200).json(newUpdate)
+    } catch (error) {
+        res.status(400)
+    }
+})
+
+
+
+
+
+// router.put('/:id', (req, res) => {
+//     const changes = req.body;
+//     proModel.update(req.params.id, changes)
+//     .then(updatedProject => {
+//         // const {name, description} = req.body
+//         if(!updatedProject.name || !updatedProject.description) return res.status(400).json({message: 'We Need DETAILS; give name and description'})
+
+//         if(updatedProject) {
+//             res.status(200).json(updatedProject)
+//         } else {
+//             res.status(404).json({message: "doesnt exist with that id"})
+//         }
+//     })
+//     .catch( error => {
+//         res.status(400).json({message: 'We Need DETAILS; give name and description'})
+//     // }
+
+// const { name, description } = req.body;
+
+    // if (!name || !description) return res.status(400).json({ message: 'We Need DETAILS; give name and description' });
+    // try {
+    //     const updatedProjectResult = await proModel.update(req.params.id, { name, description })
+    //     if (!updatedProjectResult) return res.status(404).json({ message: "doesnt exist with that id" })
+
+    //     const newUpdate = await proModel.get(req.params.id)
+    //     res.status(200).json(newUpdate)
+    // } catch (error) {
+    //     res.status(400)
+    // }
+
+
+
+
+    ---------PROJECTS DELETE-----------
+
+//     let pro
+// proModel.get(req.params.id)
+// .then((projectToDelete) => {
+//     if(!projectToDelete){
+//         res.status(404).json({message: "try again doesnt exist"})
+//     } else{
+//         pro = projectToDelete
+        
+//         return;
+//     }
+// })
+// .then(()=>{
+//     proModel.remove(req.params.id);
+//     res.status(200).json({message: "project has been removed"})
+// })
+// .catch(() => {
+//     res.status(500)
+// })
+
