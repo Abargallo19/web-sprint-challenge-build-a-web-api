@@ -32,7 +32,6 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    // const { name, description } = req.body;
     proModel.insert(req.body)
         .then(project => {
             if (!project.name || !project.description) {
@@ -42,24 +41,15 @@ router.post('/', (req, res) => {
             }
         })
         .catch(() => {
-            res.status(400).json({message: "Please provide a name and a description"})
+            res.status(400).json({ message: "Please provide a name and a description" })
         })
+})
 
+router.put('/:id', (req, res) => {
+const {name, description} = req.body;
+if(!name || !description) return res.status(400).json({message: 'We Need DETAILS'});
+if(!req.params.id) return res.status(404).json({message: 'youre making things up, that doesnt exist'});
 
-
-    // .then(({ id }) => {
-    //     return proModel.get(id)
-    // })
-    // .then(newProject => {
-    //     res.status(201).json(newProject)
-    // })
-
-
-
-
-
-    // const newProject = await 
-    // res.status(201).json({ id: req.params.id, newProject })
 
 
 })
