@@ -1,7 +1,6 @@
 // Write your "projects" router here!
 const express = require('express');
 const proModel = require('./projects-model');
-
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -23,7 +22,7 @@ router.get('/:id', async (req, res) => {
         res.status(500).json({ message: 'Something went wrong on our end' })
     }
 
-})
+});
 
 router.post('/', (req, res) => {
     proModel.insert(req.body)
@@ -37,15 +36,13 @@ router.post('/', (req, res) => {
         .catch(() => {
             res.status(400).json({ message: "Please provide a name and a description" })
         })
-})
+});
 
 router.put('/:id', (req, res) => {
     const changes = req.body;
     proModel.update(req.params.id, changes)
         .then(updatedProject => {
-
             if (!updatedProject) {
-
                 res.status(404).json({ message: "doesnt exist with that id" })
             }
             else if (!updatedProject.name || !updatedProject.description) {
@@ -76,22 +73,16 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.get('/:id/actions', async (req, res) => {
-try {
-    const actionJackson = await proModel.get(req.params.id);
-    if(!actionJackson) {
-        res.status(404).json({message: "doesnt exist, no action for you"})
-    } else {
-       const allActions =  await proModel.getProjectActions(req.params.id)
-        res.status(200).json(allActions)
+    try {
+        const actionJackson = await proModel.get(req.params.id);
+        if (!actionJackson) {
+            res.status(404).json({ message: "doesnt exist, no action for you" })
+        } else {
+            const allActions = await proModel.getProjectActions(req.params.id)
+            res.status(200).json(allActions)
+        }
+    } catch (error) {
+        res.status(500)
     }
-} catch (error) {
-    res.status(500)
-}
-
-
-
-
 });
-
-
 module.exports = router;
