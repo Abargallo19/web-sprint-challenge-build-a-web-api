@@ -16,6 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 
+
 router.get('/:id', async (req, res) => {
     try {
         const projectSelect = await proModel.get(req.params.id)
@@ -29,6 +30,19 @@ router.get('/:id', async (req, res) => {
     }
 
 })
+
+router.post('/', async (req, res) => {
+    const {name, description } = req.body;
+    try {
+        if(!name || !description) return res.status(400).json({ message: "Please provide a name and a description"})
+    } catch (error) {
+        
+    }
+
+
+
+})
+
 
 
 
