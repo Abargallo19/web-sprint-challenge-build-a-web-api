@@ -39,7 +39,16 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:d', (req, res) => {
+router.delete('/:d', async (req, res) => {
+try{
+    const annihilate = await actionMod.get(req.params.id);
+    if(!annihilate){
+        res.status(404).json({message: "whoa! try again doesnt exist"});
+    } else {
+        await actionMod.remove(req.params.id)
+        res.status(200).json({message: "confirmed kill"})
+    }
+}
 
 });
 router.put('/:id', (req, res) => {
