@@ -45,26 +45,35 @@ router.post('/', (req, res) => {
         })
 })
 
-router.put('/:id', async (req, res) => {
-const {name, description} = req.body;
-
-if(!name || !description) return res.status(400).json({message: 'We Need DETAILS; give name and description'});
-try {
-    const updatedProjectResult = await proModel.update(req.params.id, {name, description})
-    if(!updatedProjectResult) return res.status(404).json({message: "doesnt exist with that id"})
-
-    const { id, name: n, description: desc } = await proModel.get(req.params.id)
-        res.status(200).json({id, name: n, description: desc })
-} catch (error) {
-    res.status(400)
-}
-
-
-
-// if(!req.params.id) return res.status(404).json({message: 'youre making things up, that doesnt exist'});
+router.put('/:id', (req, res) => {
+const changes = req.body;
+proModel.update(req.params.id, changes)
+.then(updatedProject => {
+    if(updatedProject) {
+        res.status(200).json(updatedProject)
+    } else {
+        res.status(404).json({message: "doesnt exist with that id"})
+    }
+})
+.catch( error => {
+    res.status(400).json({message: 'We Need DETAILS; give name and description'})
+})
 
 
 
+
+    // const { name, description } = req.body;
+
+    // if (!name || !description) return res.status(400).json({ message: 'We Need DETAILS; give name and description' });
+    // try {
+    //     const updatedProjectResult = await proModel.update(req.params.id, { name, description })
+    //     if (!updatedProjectResult) return res.status(404).json({ message: "doesnt exist with that id" })
+
+    //     const newUpdate = await proModel.get(req.params.id)
+    //     res.status(200).json(newUpdate)
+    // } catch (error) {
+    //     res.status(400)
+    // }
 })
 
 
