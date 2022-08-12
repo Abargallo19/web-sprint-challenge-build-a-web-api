@@ -40,21 +40,36 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-try{
-    const annihilate = await actionMod.get(req.params.id);
-    if(!annihilate){
-        res.status(404).json({message: "whoa! try again doesnt exist"});
-    } else {
-        await actionMod.remove(req.params.id)
-        res.status(200).json({message: "confirmed kill"})
+    try {
+        const annihilate = await actionMod.get(req.params.id);
+        if (!annihilate) {
+            res.status(404).json({ message: "whoa! try again doesnt exist" });
+        } else {
+            await actionMod.remove(req.params.id)
+            res.status(200).json({ message: "confirmed kill" })
+        }
+    } catch (error) {
+        res.status(500)
     }
-} catch(error) {
-res.status(500)
-}
 
 });
 router.put('/:id', (req, res) => {
-
+    const changes = req.body;
+    actionMod.update(req.params.id, changes)
+        .then(updatedAction => {
+            if (!updatedAction) {
+                res.status(404).json({ message: "doesnt exist with that id" })
+            }
+            else if (!updatedAction.project_id || !updatedAction.description || !updatedAction.notes) {
+                res.status(400).json({ message: 'We Need DETAILS; give name and description' })
+            }
+            else {
+                res.status(200).json(updatedAction)
+            }
+        })
+        .catch(() => {
+            res.status(500).json({ message: 'We Need a new server' })
+        })
 });
 
 
