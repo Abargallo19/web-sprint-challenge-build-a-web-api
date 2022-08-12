@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:d', async (req, res) => {
+router.delete('/:id', async (req, res) => {
 try{
     const annihilate = await actionMod.get(req.params.id);
     if(!annihilate){
@@ -48,6 +48,8 @@ try{
         await actionMod.remove(req.params.id)
         res.status(200).json({message: "confirmed kill"})
     }
+} catch(error) {
+res.status(500)
 }
 
 });
