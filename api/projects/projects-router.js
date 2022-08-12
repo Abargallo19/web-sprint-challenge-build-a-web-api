@@ -31,14 +31,35 @@ router.get('/:id', async (req, res) => {
 
 })
 
-router.post('/', async (req, res) => {
-    const {name, description } = req.body;
-    try {
-        if(!name || !description) return res.status(400).json({ message: "Please provide a name and a description"})
-    } catch (error) {
-        
-    }
+router.post('/', (req, res) => {
+    // const { name, description } = req.body;
+    proModel.insert(req.body)
+        .then(project => {
+            if (!project.name || !project.description) {
+                res.status(400).json({ message: "Please provide a name and a description" });
+            } else {
+                res.status(201).json(project)
+            }
+        })
+        .catch(() => {
+            res.status(400).json({message: "Please provide a name and a description"})
+        })
 
+
+
+    // .then(({ id }) => {
+    //     return proModel.get(id)
+    // })
+    // .then(newProject => {
+    //     res.status(201).json(newProject)
+    // })
+
+
+
+
+
+    // const newProject = await 
+    // res.status(201).json({ id: req.params.id, newProject })
 
 
 })
