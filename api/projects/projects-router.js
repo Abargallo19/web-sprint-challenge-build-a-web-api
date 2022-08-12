@@ -4,7 +4,6 @@ const proModel = require('./projects-model');
 
 const router = express.Router();
 
-
 router.get('/', async (req, res) => {
     try {
         const allProjects = await proModel.get()
@@ -14,8 +13,6 @@ router.get('/', async (req, res) => {
     }
 
 });
-
-
 
 router.get('/:id', async (req, res) => {
     try {
@@ -76,29 +73,25 @@ router.delete('/:id', async (req, res) => {
         res.status(500)
 
     }
+});
 
-
-
-
+router.get('/:id/actions', async (req, res) => {
+try {
+    const actionJackson = await proModel.get(req.params.id);
+    if(!actionJackson) {
+        res.status(404).json({message: "doesnt exist, no action for you"})
+    } else {
+       const allActions =  await proModel.getProjectActions(req.params.id)
+        res.status(200).json(allActions)
+    }
+} catch (error) {
+    res.status(500)
+}
 
 
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;
