@@ -107,4 +107,17 @@ router.put('/:id', async (req, res) => {
 
 
 
-------------ACTIONS POS
+------------ACTIONS POST ---------
+router.post('/', async (req, res) => {
+    try {
+        const { project_id, description, notes } = req.body;
+        const action = await actionMod.insert({ project_id, description, notes })
+        if(!project_id || !description || !notes) return res.status(400).json({message: 'missing reqs'})
+        // actionMod.insert({ project_id, description, notes })
+        res.status(201).json(action)
+    } catch (error) {
+res.status(500)
+    }
+
+
+});

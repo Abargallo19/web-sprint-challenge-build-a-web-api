@@ -49,11 +49,11 @@ router.put('/:id', (req, res) => {
                 res.status(400).json({ message: 'We Need DETAILS; give name and description' })
             }
             else {
-                res.status(200).json(updatedProject)
+                res.status(400).json(updatedProject)
             }
         })
         .catch(() => {
-            res.status(500).json({ message: 'We Need a new server' })
+            res.status(400).json({ message: 'We Need a new server' })
         })
 });
 

@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
         }
     }
     catch (error) {
-        res.status(500).json({ message: "uh oh" })
+        res.status(400).json({ message: "uh oh" })
     }
 });
 
@@ -53,6 +53,7 @@ router.delete('/:id', async (req, res) => {
     }
 
 });
+
 router.put('/:id', (req, res) => {
     const changes = req.body;
     actionMod.update(req.params.id, changes)
@@ -68,7 +69,7 @@ router.put('/:id', (req, res) => {
             }
         })
         .catch(() => {
-            res.status(500).json({ message: 'We Need a new server' })
+            res.status(400).json({ message: 'We Need a new server' })
         })
 });
 
