@@ -42,7 +42,7 @@ A _"resetdb"_ script exists that allows you to reset the database to its origina
 #### Endpoints
 
 Inside `api/projects/projects-router.js` build the following endpoints:
-
+tester
 - [X] `[GET] /api/projects`
   - Returns an array of projects as the body of the response.
   - If there are no projects it responds with an empty array.
