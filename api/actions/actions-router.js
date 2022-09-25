@@ -3,6 +3,7 @@ const express = require('express');
 const actionMod = require('./actions-model');
 const router = express.Router();
 
+
 router.get('/', async (req, res) => {
     try {
         const weGotAction = await actionMod.get()
@@ -51,7 +52,6 @@ router.delete('/:id', async (req, res) => {
     } catch (error) {
         res.status(500)
     }
-
 });
 
 router.put('/:id', (req, res) => {

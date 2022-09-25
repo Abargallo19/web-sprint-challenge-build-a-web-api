@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong on our end' })
     }
-
 });
 
 router.get('/:id', async (req, res) => {
@@ -21,7 +20,6 @@ router.get('/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong on our end' })
     }
-
 });
 
 router.post('/', (req, res) => {
@@ -68,7 +66,6 @@ router.delete('/:id', async (req, res) => {
         }
     } catch (error) {
         res.status(500)
-
     }
 });
 
